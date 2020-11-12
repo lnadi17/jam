@@ -185,6 +185,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 517757485, guid: aeb9f4c21fdcea344b4769617e29b4d0, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 1982045919, guid: aeb9f4c21fdcea344b4769617e29b4d0, type: 3}
+      propertyPath: m_GravityScale
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1982045919, guid: aeb9f4c21fdcea344b4769617e29b4d0, type: 3}
+      propertyPath: m_Constraints
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1982045919, guid: aeb9f4c21fdcea344b4769617e29b4d0, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 6200000, guid: 673939c2403814d44b80af17c3be737c, type: 2}
+    - target: {fileID: 1982045921, guid: aeb9f4c21fdcea344b4769617e29b4d0, type: 3}
+      propertyPath: speed
+      value: 4.31
+      objectReference: {fileID: 0}
     - target: {fileID: 4533746686249278642, guid: aeb9f4c21fdcea344b4769617e29b4d0,
         type: 3}
       propertyPath: m_Name
