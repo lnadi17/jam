@@ -121,28 +121,6 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
---- !u!1 &517757479 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4533746686249278642, guid: aeb9f4c21fdcea344b4769617e29b4d0,
-    type: 3}
-  m_PrefabInstance: {fileID: 1676987365}
-  m_PrefabAsset: {fileID: 0}
---- !u!58 &517757485
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 517757479}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 1.7479315}
-  serializedVersion: 2
-  m_Radius: 0.37706852
 --- !u!1 &1043854803
 GameObject:
   m_ObjectHideFlags: 0
@@ -187,8 +165,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d85fa3d5c5085640afd4dfd9ede271b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  wall: {fileID: 0}
-  problem: 
+  wall: {fileID: 8239283708805165323, guid: bcfeba6f39c493647b2d324a218129ad, type: 3}
 --- !u!114 &1043854806
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,10 +185,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1982045921, guid: aeb9f4c21fdcea344b4769617e29b4d0, type: 3}
-      propertyPath: speed
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4533746686249278642, guid: aeb9f4c21fdcea344b4769617e29b4d0,
         type: 3}
       propertyPath: m_Name
@@ -289,7 +262,7 @@ PrefabInstance:
     - target: {fileID: 6730264181489512704, guid: 104ed3b4c8066254290e4a9b040d19be,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.84
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6730264181489512704, guid: 104ed3b4c8066254290e4a9b040d19be,
         type: 3}
