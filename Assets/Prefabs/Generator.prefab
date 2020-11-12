@@ -57,3 +57,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19319525407f93e45b7d83b409755c35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  numberObject: {fileID: 9072931274174841735, guid: 568b70bb4bb370241989947652c504ea,
+    type: 3}
+  numberSprites:
+  - {fileID: 8060736529220523392, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
+  - {fileID: -8330609692363120384, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
+  - {fileID: 2038824723306289309, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
+  - {fileID: 4798864308968896667, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
+  - {fileID: 679925491610277207, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
+  - {fileID: 4784750222968227613, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
+  - {fileID: 4910470149802833004, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
+  - {fileID: 2829407147324506526, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
+  - {fileID: 2302026287296262593, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
+  - {fileID: -2677085107020186533, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
+  plus: {fileID: 0}
+  minus: {fileID: 0}
+  equals: {fileID: 0}
+  xOffset: 0.5
