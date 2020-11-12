@@ -18,43 +18,56 @@ public class ProblemGenerator : MonoBehaviour
         DrawArithmetic("+", AdditionProblem(20, 20));
     }
 
+    int[] GetPossibleAnswers(string op, int firstNumber, int secondNumber, int arraySize)
+    {
+        return null;
+    }
+
     void DrawArithmetic(string op, Vector2Int numbers)
     {
+        Transform parent = new GameObject("NumbersParent").transform;
+        int count = 0;
         float xPosition = 0f;
-
         // Draw first
         string firstStr = numbers.x.ToString();
         foreach (char ch in firstStr)
         {
             Debug.Log(ch);
-            GameObject obj = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity);
-            Debug.Log((int)char.GetNumericValue(ch));
+            GameObject obj = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity, parent);
             obj.GetComponent<SpriteRenderer>().sprite = numberSprites[(int)char.GetNumericValue(ch)];
             xPosition += xOffset;
+            count++;
         }
         // Draw operator
         if (op == "+")
         {
-            GameObject obj = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity);
+            GameObject obj = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity, parent);
             obj.GetComponent<SpriteRenderer>().sprite = plus;
             xPosition += xOffset;
+            count++;
         }
         if (op == "-")
         {
-            GameObject obj = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity);
+            GameObject obj = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity, parent);
             obj.GetComponent<SpriteRenderer>().sprite = minus;
             xPosition += xOffset;
+            count++;
         }
         // Draw second
         string secondStr = numbers.y.ToString();
         foreach (char ch in secondStr)
         {
-            Debug.Log(ch);
-            GameObject obj = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity);
-            Debug.Log((int)char.GetNumericValue(ch));
+            GameObject obj = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity, parent);
             obj.GetComponent<SpriteRenderer>().sprite = numberSprites[(int)char.GetNumericValue(ch)];
             xPosition += xOffset;
+            count++;
+
         }
+        // Draw equal sign
+        GameObject eq = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity, parent);
+        eq.GetComponent<SpriteRenderer>().sprite = equals;
+        count++;
+        parent.position = new Vector2(xOffset / 2 - count * xOffset / 2, 4.5f);
     }
 
     Vector2Int AdditionProblem(int minSum, int maxSum)
@@ -71,11 +84,5 @@ public class ProblemGenerator : MonoBehaviour
         int firstNumber = temp.x + temp.y;
         int secondNumber = temp.x;
         return new Vector2Int(firstNumber, secondNumber);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 }
