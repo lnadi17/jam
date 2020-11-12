@@ -12,6 +12,7 @@ public class PlayerMovement : MonoBehaviour
     private Rigidbody2D rb;
     private SpriteRenderer sr;
     private bool lookinLeft = false;
+    private float forceX = 0, forceY = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -24,12 +25,9 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        forceX = 0;
+        forceY = 0;
 
-    }
-
-    private void FixedUpdate()
-    {
-        float forceX = 0, forceY = 0;
         if (Input.GetKey(KeyCode.DownArrow) && rb.velocity.y > -speed)
         {
             forceY -= force;
@@ -48,6 +46,10 @@ public class PlayerMovement : MonoBehaviour
             lookinLeft = false;
             forceX += force;
         }
+    }
+
+    private void FixedUpdate()
+    {
         rb.AddForce(new Vector2(forceX, forceY));
         if (rb.velocity.y > speed) rb.velocity = new Vector2(rb.velocity.x, speed);
         else if (rb.velocity.y < -speed) rb.velocity = new Vector2(rb.velocity.x, -speed);
