@@ -14,6 +14,9 @@ public class PlayerMovement : MonoBehaviour
     private bool lookinLeft = false;
     private float forceX = 0, forceY = 0;
 
+    private string currentGroundTag = "Untagged";
+    private List<string> groundTags = new List<string>();
+
     // Start is called before the first frame update
     void Start()
     {
@@ -56,5 +59,55 @@ public class PlayerMovement : MonoBehaviour
         if (rb.velocity.x > speed) rb.velocity = new Vector2(speed, rb.velocity.y);
         else if (rb.velocity.x < -speed) rb.velocity = new Vector2(-speed, rb.velocity.y);
         sr.flipX = lookinLeft;
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        groundTags.Add(collision.gameObject.tag);
+        collision.GetComponent<SpriteRenderer>().color = Color.gray;
+        currentGroundTag = FindMostFrequent(groundTags);
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        groundTags.Remove(collision.gameObject.tag);
+        collision.GetComponent<SpriteRenderer>().color = Color.white;
+        if (groundTags.Count == 0)
+        {
+            // Die
+        } else
+        {
+            currentGroundTag = FindMostFrequent(groundTags);
+        }
+        //foreach (string x in groundTags)
+        //{
+        //    Debug.Log(x);
+        //}
+        //Debug.Log("----");
+    }
+
+    string FindMostFrequent(List<string> list)
+    {
+        list.Sort();
+        int max = 1;
+        int count = 1;
+        string currentResult = list[0];
+        for (int i = 1; i < list.Count; i++)
+        {
+            if (!list[i].Equals(list[i - 1]))
+            {
+                count = 1;
+            } else
+            {
+                count++;
+            }
+
+            if (max < count)
+            {
+                max = count;
+                currentResult = list[i - 1];
+            }
+        }
+        return currentResult;
     }
 }
