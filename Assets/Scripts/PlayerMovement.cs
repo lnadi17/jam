@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public Vector2 respawnPoint;
+
     private float speed = 10;
     private float force = 100;
 
@@ -13,10 +15,12 @@ public class PlayerMovement : MonoBehaviour
     private bool lookinLeft = false;
     private float forceX = 0, forceY = 0;
     private bool isDying = false;
+    private ProblemGenerator problemGenerator;
 
     private string currentGroundTag = "Untagged";
     private string lastGroundTag = "Untagged";
     private List<string> groundTags = new List<string>();
+    
 
     // Start is called before the first frame update
     void Start()
@@ -24,6 +28,7 @@ public class PlayerMovement : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
+        problemGenerator = GameObject.Find("Generator").GetComponent<ProblemGenerator>();
         transform.up = new Vector2(0, 0);
     }
 
@@ -32,7 +37,7 @@ public class PlayerMovement : MonoBehaviour
     {
         forceX = 0;
         forceY = 0;
-        if (isDying) { rb.velocity = Vector2.zero;  return; }
+        if (isDying) { rb.velocity = Vector2.zero; return; }
         if (Input.GetKey(KeyCode.DownArrow) && rb.velocity.y > -speed)
         {
             forceY -= force;
@@ -65,19 +70,37 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        string otherTag = collision.gameObject.tag;
+        if (otherTag == "A_1" || otherTag == "A_2" || otherTag == "A_3")
+        {
+            if (problemGenerator.correctTag == otherTag)
+            {
+                Debug.Log("correct");
+                //
+            } else
+            {
+                Debug.Log("incorrect");
+                //
+            }
+            return;
+        }
         groundTags.Add(collision.gameObject.tag);
-        collision.GetComponent<SpriteRenderer>().color = Color.gray;
+        //collision.GetComponent<SpriteRenderer>().color = Color.gray;
         lastGroundTag = currentGroundTag;
         currentGroundTag = FindMostFrequent(groundTags);
-        if(currentGroundTag != lastGroundTag) UpdateSpeedAndForce();
+        if (currentGroundTag != lastGroundTag) UpdateSpeedAndForce();
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        groundTags.Remove(collision.gameObject.tag);
-        collision.GetComponent<SpriteRenderer>().color = Color.white;
-        if (groundTags.Count == 0)
+        string otherTag = collision.gameObject.tag;
+        if (otherTag == "A_1" || otherTag == "A_2" || otherTag == "A_3")
         {
+            return;
+        }
+        groundTags.Remove(collision.gameObject.tag);
+        //collision.GetComponent<SpriteRenderer>().color = Color.white;
+        if (groundTags.Count == 0) {
             // Die
             SoundManagerScript.PlaySound("death");
             isDying = true;
@@ -102,7 +125,6 @@ public class PlayerMovement : MonoBehaviour
         //Debug.Log("----");
     }
 
-
     void UpdateSpeedAndForce()
     {
         if (currentGroundTag == "Grass_1")
@@ -121,7 +143,7 @@ public class PlayerMovement : MonoBehaviour
         {
             speed = 1.6f;
             force = 30;
-            rb.drag = 0.5f;
+            rb.drag = 0.1f;
         }
     }
 

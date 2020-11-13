@@ -26,7 +26,7 @@ public class SoundManagerScript : MonoBehaviour
                 break;
             case "death":
                 audioSrc.PlayOneShot(deathSound);
-                GeneralAudioScript.StopSound();
+                // GeneralAudioScript.StopSound();
                 break;
         }
     }
