@@ -134,6 +134,7 @@ public class ProblemGenerator : MonoBehaviour
         {
             GameObject obj = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity, parent);
             obj.GetComponent<SpriteRenderer>().sprite = numberSprites[(int)char.GetNumericValue(ch)];
+            obj.GetComponent<SpriteRenderer>().sortingOrder = 10;
             xPosition += xOffset;
             count++;
         }
@@ -142,6 +143,7 @@ public class ProblemGenerator : MonoBehaviour
         {
             GameObject obj = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity, parent);
             obj.GetComponent<SpriteRenderer>().sprite = plus;
+            obj.GetComponent<SpriteRenderer>().sortingOrder = 10;
             xPosition += xOffset;
             count++;
         }
@@ -149,6 +151,7 @@ public class ProblemGenerator : MonoBehaviour
         {
             GameObject obj = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity, parent);
             obj.GetComponent<SpriteRenderer>().sprite = minus;
+            obj.GetComponent<SpriteRenderer>().sortingOrder = 10;
             xPosition += xOffset;
             count++;
         }
@@ -158,6 +161,7 @@ public class ProblemGenerator : MonoBehaviour
         {
             GameObject obj = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity, parent);
             obj.GetComponent<SpriteRenderer>().sprite = numberSprites[(int)char.GetNumericValue(ch)];
+            obj.GetComponent<SpriteRenderer>().sortingOrder = 10;
             xPosition += xOffset;
             count++;
 
@@ -165,8 +169,9 @@ public class ProblemGenerator : MonoBehaviour
         // Draw equal sign
         GameObject eq = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity, parent);
         eq.GetComponent<SpriteRenderer>().sprite = equals;
+        eq.GetComponent<SpriteRenderer>().sortingOrder = 10;
         count++;
-        parent.position = new Vector2(xOffset / 2 - count * xOffset / 2, 4.5f);
+        parent.position = new Vector2(xOffset / 2 - count * xOffset / 2, 4.57f);
         otherRangesX.Add(new Vector2(parent.position.x, parent.position.x + count * xOffset));
         otherRangesY.Add(new Vector2(parent.position.y, parent.position.y + numberSprites[0].bounds.size.x));
         numbersPresentObjects.Add(numbersPresent);
