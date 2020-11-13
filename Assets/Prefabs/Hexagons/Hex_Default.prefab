@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 4578344522196977570}
   - component: {fileID: 1635098477}
   m_Layer: 0
-  m_Name: Hexagon
-  m_TagString: Untagged
+  m_Name: Hex_Default
+  m_TagString: Grass_1
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -72,7 +72,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 4387261727341266020, guid: 1cf4d2edb3ce6c644a1a00ad276b196f,
+  m_Sprite: {fileID: 5927997381536504936, guid: 1cf4d2edb3ce6c644a1a00ad276b196f,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -115,14 +115,14 @@ PolygonCollider2D:
   m_Enabled: 1
   m_Density: 1
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0}
-    oldSize: {x: 0.97727275, y: 0.97727275}
+    oldSize: {x: 0.97727275, y: 0.9318182}
     newSize: {x: 0.43, y: 0.41}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
@@ -132,7 +132,7 @@ PolygonCollider2D:
     m_Paths:
     - - {x: -0.21504903, y: 0.8755975}
       - {x: -0.44393492, y: 0.4960556}
-      - {x: -0.1999234, y: 0.09272337}
-      - {x: 0.21472266, y: 0.09436989}
+      - {x: -0.21680844, y: 0.0932951}
+      - {x: 0.22633097, y: 0.09813309}
       - {x: 0.44121075, y: 0.49158287}
       - {x: 0.22390848, y: 0.877659}

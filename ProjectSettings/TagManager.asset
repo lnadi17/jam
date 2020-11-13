@@ -3,7 +3,15 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Grass_1
+  - Grass_2
+  - Grass_3
+  - Grass_4
+  - Grass_5
+  - Grass_6
+  - Grass_7
+  - Grass_8
   layers:
   - Default
   - TransparentFX

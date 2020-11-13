@@ -318,9 +318,9 @@ TextureImporter:
       name: Hexagons_2_3
       rect:
         serializedVersion: 2
-        x: 129
+        x: 130
         y: 325
-        width: 43
+        width: 42
         height: 47
       alignment: 7
       pivot: {x: 0.5, y: 0}
