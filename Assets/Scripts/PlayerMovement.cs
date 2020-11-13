@@ -20,7 +20,7 @@ public class PlayerMovement : MonoBehaviour
     private string currentGroundTag = "Untagged";
     private string lastGroundTag = "Untagged";
     private List<string> groundTags = new List<string>();
-    
+    private static int correctAns = 0, incorrectAns = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -75,13 +75,16 @@ public class PlayerMovement : MonoBehaviour
         {
             if (problemGenerator.correctTag == otherTag)
             {
-                Debug.Log("correct");
-                //
+                Debug.Log("Correct");
+                correctAns++;
+                Debug.Log(correctAns);
             } else
             {
-                Debug.Log("incorrect");
-                //
+                incorrectAns++;
             }
+            problemGenerator.secondsPassed = ProblemGenerator.TIMER_SECS;
+            problemGenerator.DrawAll();
+            Destroy(gameObject);
             return;
         }
         groundTags.Add(collision.gameObject.tag);
@@ -112,6 +115,8 @@ public class PlayerMovement : MonoBehaviour
                 anim.SetTrigger("deathLeft");
             }
             Destroy(gameObject, 2f);
+            incorrectAns++;
+            Invoke(nameof(ResetGame), 1.5f);
         } else
         {
             lastGroundTag = currentGroundTag;
@@ -170,5 +175,11 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         return currentResult;
+    }
+
+    void ResetGame()
+    {
+        problemGenerator.secondsPassed = ProblemGenerator.TIMER_SECS;
+        problemGenerator.DrawAll();
     }
 }

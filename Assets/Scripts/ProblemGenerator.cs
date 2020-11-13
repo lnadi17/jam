@@ -14,6 +14,7 @@ public class ProblemGenerator : MonoBehaviour
     public static readonly int MIN_SUM = 20;
     public static readonly int MAX_SUM = 20;
     public static readonly int TIMER_SECS = 10;
+    public static int NUMBER_OF_PROBLEMS = 5;
 
     public enum Type { Arithmetic, Equation };
     public GameObject numberObject;
@@ -25,10 +26,11 @@ public class ProblemGenerator : MonoBehaviour
     public float xOffset;
     public string correctTag;
 
+    public static int number_of_question = 1;
     private int currentAnswerInt;
     private List<GameObject> numbersPresentObjects;
     private GameObject timerObject;
-    private int secondsPassed;
+    public int secondsPassed;
     private List<Vector2> numbersPresentRangesX;
     private List<Vector2> otherRangesX;
     private List<Vector2> numbersPresentRangesY;
@@ -54,10 +56,17 @@ public class ProblemGenerator : MonoBehaviour
         InvokeRepeating("DrawAll", 0, 1.0f);
     }
 
-    void DrawAll()
+    public void DrawAll()
     {
+        if (number_of_question > NUMBER_OF_PROBLEMS)
+        {
+            Debug.Log(number_of_question);
+            // game over
+            return;
+        }
         if (secondsPassed == TIMER_SECS)
         {
+            number_of_question++;
             foreach (GameObject numbersPresentObjcet in numbersPresentObjects)
             {
                 Destroy(numbersPresentObjcet);
