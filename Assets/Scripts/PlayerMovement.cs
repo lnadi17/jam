@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float speed = 10;
-    public float force = 100;
+    private float speed = 10;
+    private float force = 100;
 
     private Rigidbody2D rb;
     private SpriteRenderer sr;
@@ -15,6 +15,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isDying = false;
 
     private string currentGroundTag = "Untagged";
+    private string lastGroundTag = "Untagged";
     private List<string> groundTags = new List<string>();
 
     // Start is called before the first frame update
@@ -66,8 +67,9 @@ public class PlayerMovement : MonoBehaviour
     {
         groundTags.Add(collision.gameObject.tag);
         collision.GetComponent<SpriteRenderer>().color = Color.gray;
+        lastGroundTag = currentGroundTag;
         currentGroundTag = FindMostFrequent(groundTags);
-        //UpdateSpeedAndForce();
+        if(currentGroundTag != lastGroundTag) UpdateSpeedAndForce();
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -88,8 +90,9 @@ public class PlayerMovement : MonoBehaviour
             Destroy(gameObject, 2f);
         } else
         {
-            //UpdateSpeedAndForce();
+            lastGroundTag = currentGroundTag;
             currentGroundTag = FindMostFrequent(groundTags);
+            if(lastGroundTag != currentGroundTag) UpdateSpeedAndForce();
         }
         //foreach (string x in groundTags)
         //{
@@ -99,9 +102,26 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
-    void UpdateSpeedAndforce()
+    void UpdateSpeedAndForce()
     {
-
+        if (currentGroundTag == "Grass_1")
+        {
+            speed = 2.5f;
+            force = 100;
+            rb.drag = 10;
+        }
+        else if (currentGroundTag == "Grass_4") 
+        {
+            speed = 0.5f;
+            force = 50;
+            rb.drag = 20;
+        }
+        else if (currentGroundTag == "Grass_7" || currentGroundTag == "Grass_8")
+        {
+            speed = 1.6f;
+            force = 30;
+            rb.drag = 0.5f;
+        }
     }
 
     string FindMostFrequent(List<string> list)
