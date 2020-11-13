@@ -5,17 +5,14 @@ using UnityEngine;
 public class GeneralAudioScript : MonoBehaviour
 {
 
-    public static AudioClip generalSound;
     static AudioSource audioSrc;
 
     // Start is called before the first frame update
     void Start()
     {
-        generalSound = Resources.Load<AudioClip>("general");
-
         audioSrc = GetComponent<AudioSource>();
-
-        PlaySound("general");
+        audioSrc.loop = true;
+        PlaySound();
     }
 
     // Update is called once per frame
@@ -24,23 +21,13 @@ public class GeneralAudioScript : MonoBehaviour
 
     }
 
-    public static void PlaySound(string sound)
+    public static void PlaySound()
     {
-        switch (sound)
-        {
-            case "general":
-                audioSrc.PlayOneShot(generalSound);
-                break;
-        }
+       audioSrc.Play();
     }
 
-    public static void StopSound(string sound)
+    public static void StopSound()
     {
-        switch (sound)
-        {
-            case "general":
-                audioSrc.Stop();
-                break;
-        }
+        audioSrc.Stop();
     }
 }
