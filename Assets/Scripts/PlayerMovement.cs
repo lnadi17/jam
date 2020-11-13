@@ -85,7 +85,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
         groundTags.Add(collision.gameObject.tag);
-        collision.GetComponent<SpriteRenderer>().color = Color.gray;
+        //collision.GetComponent<SpriteRenderer>().color = Color.gray;
         lastGroundTag = currentGroundTag;
         currentGroundTag = FindMostFrequent(groundTags);
         if (currentGroundTag != lastGroundTag) UpdateSpeedAndForce();
@@ -99,7 +99,7 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
         groundTags.Remove(collision.gameObject.tag);
-        collision.GetComponent<SpriteRenderer>().color = Color.white;
+        //collision.GetComponent<SpriteRenderer>().color = Color.white;
         if (groundTags.Count == 0) {
             // Die
             SoundManagerScript.PlaySound("death");
