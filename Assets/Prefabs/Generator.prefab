@@ -63,16 +63,16 @@ MonoBehaviour:
   numberObject: {fileID: 9072931274174841735, guid: 568b70bb4bb370241989947652c504ea,
     type: 3}
   numberSprites:
-  - {fileID: 8060736529220523392, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
-  - {fileID: -8330609692363120384, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
-  - {fileID: 2038824723306289309, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
-  - {fileID: 4798864308968896667, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
-  - {fileID: 679925491610277207, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
-  - {fileID: 4784750222968227613, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
-  - {fileID: 4910470149802833004, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
-  - {fileID: 2829407147324506526, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
-  - {fileID: 2302026287296262593, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
-  - {fileID: -2677085107020186533, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
+  - {fileID: 2387789543101180539, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
+  - {fileID: -21509003728473464, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
+  - {fileID: 8949982844875024100, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
+  - {fileID: -3179953704994366758, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
+  - {fileID: -4636003498900948019, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
+  - {fileID: 834339678276174480, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
+  - {fileID: -7041614542626119953, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
+  - {fileID: -7970187427464935844, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
+  - {fileID: 3258159141443545570, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
+  - {fileID: 4274954377903267010, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
   timerSprites:
   - {fileID: 3961032501878180052, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
   - {fileID: 1298102487632392711, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
@@ -84,10 +84,11 @@ MonoBehaviour:
   - {fileID: 7538018575913998714, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
   - {fileID: 8950277699795703187, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
   - {fileID: 8340740526877732693, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
-  plus: {fileID: -3337038689812066966, guid: 5a2d67beefba9cb4995713cad1f4c7f1, type: 3}
-  minus: {fileID: -2836335398978793527, guid: 5a2d67beefba9cb4995713cad1f4c7f1, type: 3}
-  equals: {fileID: 4854397496335690116, guid: 5a2d67beefba9cb4995713cad1f4c7f1, type: 3}
-  xOffset: 0.5
+  plus: {fileID: -850948912307824592, guid: dcd12169c7136844fa9f38007239b144, type: 3}
+  minus: {fileID: 3934327920131840932, guid: dcd12169c7136844fa9f38007239b144, type: 3}
+  equals: {fileID: -1560229731792583106, guid: dcd12169c7136844fa9f38007239b144, type: 3}
+  xOffset: 0.4
+  correctTag: 
 --- !u!114 &2711431853448292080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -95,7 +96,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6005368303167915811}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 391d72c90da68944793cf69f04ab0054, type: 3}
   m_Name: 
