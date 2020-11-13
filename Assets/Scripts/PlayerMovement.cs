@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    [Range(0, 10)]
     public float speed = 10;
-    [Range(0, 100)]
     public float force = 100;
 
     private Rigidbody2D rb;
     private SpriteRenderer sr;
+    private Animator anim;
     private bool lookinLeft = false;
     private float forceX = 0, forceY = 0;
+    private bool isDying = false;
 
     private string currentGroundTag = "Untagged";
     private List<string> groundTags = new List<string>();
@@ -22,6 +22,7 @@ public class PlayerMovement : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
         transform.up = new Vector2(0, 0);
     }
 
@@ -30,7 +31,7 @@ public class PlayerMovement : MonoBehaviour
     {
         forceX = 0;
         forceY = 0;
-
+        if (isDying) { rb.velocity = Vector2.zero;  return; }
         if (Input.GetKey(KeyCode.DownArrow) && rb.velocity.y > -speed)
         {
             forceY -= force;
@@ -66,6 +67,7 @@ public class PlayerMovement : MonoBehaviour
         groundTags.Add(collision.gameObject.tag);
         collision.GetComponent<SpriteRenderer>().color = Color.gray;
         currentGroundTag = FindMostFrequent(groundTags);
+        //UpdateSpeedAndForce();
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -75,8 +77,18 @@ public class PlayerMovement : MonoBehaviour
         if (groundTags.Count == 0)
         {
             // Die
+            isDying = true;
+            if (collision.transform.position.x < transform.position.x)
+            {
+                anim.SetTrigger("deathRight");
+            } else
+            {
+                anim.SetTrigger("deathLeft");
+            }
+            Destroy(gameObject, 2f);
         } else
         {
+            //UpdateSpeedAndForce();
             currentGroundTag = FindMostFrequent(groundTags);
         }
         //foreach (string x in groundTags)
@@ -84,6 +96,12 @@ public class PlayerMovement : MonoBehaviour
         //    Debug.Log(x);
         //}
         //Debug.Log("----");
+    }
+
+
+    void UpdateSpeedAndforce()
+    {
+
     }
 
     string FindMostFrequent(List<string> list)
