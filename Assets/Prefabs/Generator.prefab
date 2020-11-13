@@ -82,6 +82,12 @@ MonoBehaviour:
   - {fileID: 7538018575913998714, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
   - {fileID: 8950277699795703187, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
   - {fileID: 8340740526877732693, guid: 5eee5dd2ee3ba8c4f96c5fa273ac0ba3, type: 3}
+  AnswerBox1: {fileID: 5427916266390853179, guid: 91efb7d031cef8c479b6d4e7ff18bbde,
+    type: 3}
+  AnswerBox2: {fileID: 5064420886629871927, guid: 49736998d2b38714d993b3e6c2fa693e,
+    type: 3}
+  AnswerBox3: {fileID: 8861735775072641071, guid: c27289ef10a4e0a40ba372b404fb4593,
+    type: 3}
   plus: {fileID: -3337038689812066966, guid: 5a2d67beefba9cb4995713cad1f4c7f1, type: 3}
   minus: {fileID: -2836335398978793527, guid: 5a2d67beefba9cb4995713cad1f4c7f1, type: 3}
   equals: {fileID: 4854397496335690116, guid: 5a2d67beefba9cb4995713cad1f4c7f1, type: 3}

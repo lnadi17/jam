@@ -30,10 +30,16 @@ public class ProblemGenerator : MonoBehaviour
     private List<Vector2> otherRangesX;
     private List<Vector2> numbersPresentRangesY;
     private List<Vector2> otherRangesY;
+    private List<GameObject> answerObjects;
 
     // Start is called before the first frame update
     void Start()
     {
+        answerObjects = new List<GameObject>() {
+            GameObject.FindGameObjectWithTag("A_1"),
+            GameObject.FindGameObjectWithTag("A_2"),
+            GameObject.FindGameObjectWithTag("A_3"),
+        };
         numbersPresentRangesX = new List<Vector2>();
         otherRangesX = new List<Vector2>();
         numbersPresentRangesY = new List<Vector2>();
@@ -83,9 +89,10 @@ public class ProblemGenerator : MonoBehaviour
         DrawArithmetic(op, numbers);
 
         HashSet<int> possibleAnswers = GetPossibleAnswers(op, numbers, 3);
+        int index = 0;
         foreach (int number in possibleAnswers)
         {
-            DrawNumber(number);
+            DrawNumber(number, index++);
         }
     }
 
@@ -155,7 +162,6 @@ public class ProblemGenerator : MonoBehaviour
             count++;
 
         }
-        Debug.Log(numberSprites[0].bounds.size.x);
         // Draw equal sign
         GameObject eq = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity, parent);
         eq.GetComponent<SpriteRenderer>().sprite = equals;
@@ -166,7 +172,7 @@ public class ProblemGenerator : MonoBehaviour
         numbersPresentObjects.Add(numbersPresent);
     }
 
-    void DrawNumber(int number)
+    void DrawNumber(int number, int index)
     {
         GameObject numbersPresent = new GameObject("NumbersPresent");
         Transform parent = numbersPresent.transform;
@@ -176,6 +182,7 @@ public class ProblemGenerator : MonoBehaviour
         {
             GameObject obj = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity, parent);
             obj.GetComponent<SpriteRenderer>().sprite = minus;
+            obj.GetComponent<SpriteRenderer>().sortingOrder = 10;
             xPosition += xOffset;
             count++;
             number = -number;
@@ -184,12 +191,13 @@ public class ProblemGenerator : MonoBehaviour
         {
             GameObject obj = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity, parent);
             obj.GetComponent<SpriteRenderer>().sprite = numberSprites[(int)char.GetNumericValue(ch)];
+            obj.GetComponent<SpriteRenderer>().sortingOrder = 10;
             xPosition += xOffset;
             count++;
         }
-        parent.position = new Vector2(Random.Range(-3.7f, 3.7f - count * 0.5f), Random.Range(-4.7f, 4.75f));
-        numbersPresentRangesX.Add(new Vector2(parent.position.x, parent.position.x + count * xOffset));
-        numbersPresentRangesY.Add(new Vector2(parent.position.y, parent.position.y + numberSprites[0].bounds.size.x));
+        parent.position = new Vector2(answerObjects[index].transform.position.x, answerObjects[index].transform.position.y);
+        //numbersPresentRangesX.Add(new Vector2(parent.position.x, parent.position.x + count * xOffset));
+        //numbersPresentRangesY.Add(new Vector2(parent.position.y, parent.position.y + numberSprites[0].bounds.size.x));
         numbersPresentObjects.Add(numbersPresent);
     }
 
@@ -204,6 +212,7 @@ public class ProblemGenerator : MonoBehaviour
         {
             GameObject obj = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity, parent);
             obj.GetComponent<SpriteRenderer>().sprite = timerSprites[(int)char.GetNumericValue(ch)];
+            obj.GetComponent<SpriteRenderer>().sortingOrder = 10;
             xPosition += xOffset;
             count++;
         }
