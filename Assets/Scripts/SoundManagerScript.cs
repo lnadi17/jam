@@ -30,5 +30,4 @@ public class SoundManagerScript : MonoBehaviour
                 break;
         }
     }
-
 }

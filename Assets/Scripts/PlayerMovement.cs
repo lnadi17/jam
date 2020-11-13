@@ -20,7 +20,8 @@ public class PlayerMovement : MonoBehaviour
     private string currentGroundTag = "Untagged";
     private string lastGroundTag = "Untagged";
     private List<string> groundTags = new List<string>();
-    private static int correctAns = 0, incorrectAns = 0;
+    public static int correctAns = 0, incorrectAns = 0;
+    private TextMesh textMesh;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
         anim = GetComponent<Animator>();
         problemGenerator = GameObject.Find("Generator").GetComponent<ProblemGenerator>();
         transform.up = new Vector2(0, 0);
+        textMesh = GameObject.Find("Score").GetComponent<TextMesh>();
     }
 
     // Update is called once per frame
@@ -75,13 +77,16 @@ public class PlayerMovement : MonoBehaviour
         {
             if (problemGenerator.correctTag == otherTag)
             {
+                //SoundManagerScript.PlaySound("score");
                 Debug.Log("Correct");
                 correctAns++;
                 Debug.Log(correctAns);
             } else
             {
                 incorrectAns++;
+                //SoundManagerScript.PlaySound("score");
             }
+            textMesh.text = correctAns.ToString() + "/" + ProblemGenerator.NUMBER_OF_PROBLEMS.ToString();
             problemGenerator.secondsPassed = ProblemGenerator.TIMER_SECS;
             problemGenerator.DrawAll();
             Destroy(gameObject);

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class ProblemGenerator : MonoBehaviour
 {
@@ -60,7 +61,10 @@ public class ProblemGenerator : MonoBehaviour
     {
         if (number_of_question > NUMBER_OF_PROBLEMS)
         {
-            Debug.Log(number_of_question);
+            //Debug.Log(PlayerMovement.correctAns.ToString() + "/" + NUMBER_OF_PROBLEMS.ToString());
+            number_of_question = 1;
+            PlayerMovement.correctAns = 0;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
             // game over
             return;
         }
