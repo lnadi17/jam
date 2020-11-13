@@ -23,6 +23,9 @@ public class ProblemGenerator : MonoBehaviour
     public Sprite minus;
     public Sprite equals;
     public float xOffset;
+    public string correctTag;
+
+    private int currentAnswerInt;
     private List<GameObject> numbersPresentObjects;
     private GameObject timerObject;
     private int secondsPassed;
@@ -88,15 +91,19 @@ public class ProblemGenerator : MonoBehaviour
         }
         DrawArithmetic(op, numbers);
 
-        HashSet<int> possibleAnswers = GetPossibleAnswers(op, numbers, 3);
+        List<int> possibleAnswers = GetPossibleAnswers(op, numbers, 3);
         int index = 0;
         foreach (int number in possibleAnswers)
         {
+            if (number == currentAnswerInt)
+            {
+                correctTag = "A_" + (index + 1).ToString();
+            }
             DrawNumber(number, index++);
         }
     }
 
-    HashSet<int> GetPossibleAnswers(Operator op, Vector2Int numbers, int arraySize)
+    List<int> GetPossibleAnswers(Operator op, Vector2Int numbers, int arraySize)
     {
         HashSet<int> result = new HashSet<int>();
         int resultNum = 0;
@@ -109,11 +116,18 @@ public class ProblemGenerator : MonoBehaviour
                 break;
         }
         result.Add(resultNum);
+        currentAnswerInt = resultNum;
         while (result.Count != arraySize)
         {
             result.Add(Random.Range(resultNum - 7, resultNum + 8));
         }
-        return result;
+        List<int> list = new List<int>();
+        foreach(int item in result)
+        {
+            list.Add(item);
+        }
+        list.Sort();
+        return list;
     }
 
     private Operator getRandomOperator()
