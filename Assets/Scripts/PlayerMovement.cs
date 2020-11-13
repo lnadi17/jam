@@ -79,6 +79,7 @@ public class PlayerMovement : MonoBehaviour
         if (groundTags.Count == 0)
         {
             // Die
+            SoundManagerScript.PlaySound("death");
             isDying = true;
             if (collision.transform.position.x < transform.position.x)
             {
