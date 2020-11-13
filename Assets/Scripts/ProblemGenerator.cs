@@ -64,7 +64,7 @@ public class ProblemGenerator : MonoBehaviour
             //Debug.Log(PlayerMovement.correctAns.ToString() + "/" + NUMBER_OF_PROBLEMS.ToString());
             number_of_question = 1;
             PlayerMovement.correctAns = 0;
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1) % 6);
             // game over
             return;
         }
