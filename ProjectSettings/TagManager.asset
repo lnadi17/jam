@@ -12,6 +12,9 @@ TagManager:
   - Grass_6
   - Grass_7
   - Grass_8
+  - A_1
+  - A_2
+  - A_3
   layers:
   - Default
   - TransparentFX
