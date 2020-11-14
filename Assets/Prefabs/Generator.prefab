@@ -89,6 +89,7 @@ MonoBehaviour:
   equals: {fileID: -1560229731792583106, guid: dcd12169c7136844fa9f38007239b144, type: 3}
   xOffset: 0.4
   correctTag: 
+  secondsPassed: 0
 --- !u!114 &2711431853448292080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -114,7 +115,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: db8c951d038238d448efaa3fe412b557, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.5
   m_Pitch: 1
   Loop: 0
   Mute: 0
