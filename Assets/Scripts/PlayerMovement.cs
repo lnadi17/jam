@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public Color correctColor;
+    public Color incorrectColor;
+
     private Text correctText;
     private Text incorrectText;
 
@@ -19,6 +22,8 @@ public class PlayerMovement : MonoBehaviour
     private float forceX = 0, forceY = 0;
     private bool isDying = false;
     private ProblemGenerator problemGenerator;
+    private GameObject progressBarObject;
+    private GameObject currentProgressBar;
 
     private string currentGroundTag = "Untagged";
     private string lastGroundTag = "Untagged";
@@ -36,6 +41,7 @@ public class PlayerMovement : MonoBehaviour
         transform.up = new Vector2(0, 0);
         correctText = GameObject.Find("Correct_Score").GetComponent<Text>();
         incorrectText = GameObject.Find("Incorrect_Score").GetComponent<Text>();
+        progressBarObject = GameObject.Find("ProgressBar");
     }
 
     // Update is called once per frame
@@ -85,6 +91,7 @@ public class PlayerMovement : MonoBehaviour
                 SoundManagerScript.PlaySound("score");
                 correctAns++;
                 correctText.text = correctAns.ToString();
+                UpdateLevelProgress(true);
             }
             else
             {
@@ -92,6 +99,7 @@ public class PlayerMovement : MonoBehaviour
                 Debug.Log(incorrectAns);
                 incorrectText.text = incorrectAns.ToString();
                 SoundManagerScript.PlaySound("score");
+                UpdateLevelProgress(false);
             }
             problemGenerator.secondsPassed = problemGenerator.timerSeconds;
             problemGenerator.DrawAll();
@@ -106,9 +114,30 @@ public class PlayerMovement : MonoBehaviour
         if (currentGroundTag != lastGroundTag) UpdateSpeedAndForce();
     }
 
-    private void ChangeLevel()
+    // Draws correct level bar if passed true
+    private void UpdateLevelProgress(bool isCorrect)
     {
-        
+        if (ProblemGenerator.number_of_question == 1)
+        {
+            progressBarObject.SetActive(true);
+            // 3 is the width of the board
+            progressBarObject.transform.localScale = new Vector2(3f / problemGenerator.numberOfProblems, 1);
+            currentProgressBar = progressBarObject;
+        } else
+        {
+            Vector2 newPosition = new Vector2(progressBarObject.transform.position.x + progressBarObject.transform.localScale.x * (ProblemGenerator.number_of_question - 1), 
+                                              progressBarObject.transform.position.y);
+            currentProgressBar = Instantiate(progressBarObject, newPosition, Quaternion.identity);
+            currentProgressBar.transform.localScale = new Vector2(3f / problemGenerator.numberOfProblems, 1);
+        }
+        if (isCorrect)
+        {
+            currentProgressBar.GetComponent<SpriteRenderer>().color = correctColor;
+        }
+        else
+        {
+            currentProgressBar.GetComponent<SpriteRenderer>().color = incorrectColor;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -121,7 +150,7 @@ public class PlayerMovement : MonoBehaviour
         //collision.GetComponent<SpriteRenderer>().color = Color.white;
         if (groundTags.Count == 0) {
             // Die
-            Debug.Log("Fell");
+            UpdateLevelProgress(false);
             SoundManagerScript.PlaySound("death");
             isDying = true;
             if (collision.transform.position.x < transform.position.x)
@@ -133,6 +162,7 @@ public class PlayerMovement : MonoBehaviour
             }
             Destroy(gameObject, 2f);
             incorrectAns++;
+            incorrectText.text = incorrectAns.ToString();
             Debug.Log("Increased Incorrect Answer");
             Invoke(nameof(ResetGame), 1.5f);
         } else

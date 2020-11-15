@@ -62,12 +62,11 @@ public class ProblemGenerator : MonoBehaviour
 
     public void DrawAll()
     {
+        if (gameOver) { return; }
         if (secondsPassed == timerSeconds)
         {
             number_of_question++;
-            if (ProblemGenerator.number_of_question > numberOfProblems)
-            {
-
+            if (ProblemGenerator.number_of_question > numberOfProblems) {
                 curtainAnimator.SetTrigger("FadeOut");
                 ProblemGenerator.number_of_question = 1;
                 PlayerMovement.correctAns = 0;
