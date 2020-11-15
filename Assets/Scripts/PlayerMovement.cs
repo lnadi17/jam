@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public Vector2 respawnPoint;
+    private Text correctText;
+    private Text incorrectText;
 
     private float speed = 10;
     private float force = 100;
@@ -20,8 +23,8 @@ public class PlayerMovement : MonoBehaviour
     private string currentGroundTag = "Untagged";
     private string lastGroundTag = "Untagged";
     private List<string> groundTags = new List<string>();
+    private bool ignoreTriggerExit = false;
     public static int correctAns = 0, incorrectAns = 0;
-    private TextMesh textMesh;
 
     // Start is called before the first frame update
     void Start()
@@ -31,7 +34,8 @@ public class PlayerMovement : MonoBehaviour
         anim = GetComponent<Animator>();
         problemGenerator = GameObject.Find("Generator").GetComponent<ProblemGenerator>();
         transform.up = new Vector2(0, 0);
-        textMesh = GameObject.Find("Score").GetComponent<TextMesh>();
+        correctText = GameObject.Find("Correct_Score").GetComponent<Text>();
+        incorrectText = GameObject.Find("Incorrect_Score").GetComponent<Text>();
     }
 
     // Update is called once per frame
@@ -75,21 +79,24 @@ public class PlayerMovement : MonoBehaviour
         string otherTag = collision.gameObject.tag;
         if (otherTag == "A_1" || otherTag == "A_2" || otherTag == "A_3")
         {
+            ignoreTriggerExit = true;
             if (problemGenerator.correctTag == otherTag)
             {
-                //SoundManagerScript.PlaySound("score");
-                Debug.Log("Correct");
+                SoundManagerScript.PlaySound("score");
                 correctAns++;
-                Debug.Log(correctAns);
-            } else
+                correctText.text = correctAns.ToString();
+            }
+            else
             {
                 incorrectAns++;
-                //SoundManagerScript.PlaySound("score");
+                Debug.Log(incorrectAns);
+                incorrectText.text = incorrectAns.ToString();
+                SoundManagerScript.PlaySound("score");
             }
-            textMesh.text = correctAns.ToString() + "/" + ProblemGenerator.NUMBER_OF_PROBLEMS.ToString();
-            problemGenerator.secondsPassed = ProblemGenerator.TIMER_SECS;
+            problemGenerator.secondsPassed = problemGenerator.timerSeconds;
             problemGenerator.DrawAll();
             Destroy(gameObject);
+            Debug.Log("After destroy");
             return;
         }
         groundTags.Add(collision.gameObject.tag);
@@ -99,17 +106,22 @@ public class PlayerMovement : MonoBehaviour
         if (currentGroundTag != lastGroundTag) UpdateSpeedAndForce();
     }
 
+    private void ChangeLevel()
+    {
+        
+    }
+
     private void OnTriggerExit2D(Collider2D collision)
     {
         string otherTag = collision.gameObject.tag;
-        if (otherTag == "A_1" || otherTag == "A_2" || otherTag == "A_3")
-        {
+        if (ignoreTriggerExit) {
             return;
         }
         groundTags.Remove(collision.gameObject.tag);
         //collision.GetComponent<SpriteRenderer>().color = Color.white;
         if (groundTags.Count == 0) {
             // Die
+            Debug.Log("Fell");
             SoundManagerScript.PlaySound("death");
             isDying = true;
             if (collision.transform.position.x < transform.position.x)
@@ -121,6 +133,7 @@ public class PlayerMovement : MonoBehaviour
             }
             Destroy(gameObject, 2f);
             incorrectAns++;
+            Debug.Log("Increased Incorrect Answer");
             Invoke(nameof(ResetGame), 1.5f);
         } else
         {
@@ -184,7 +197,7 @@ public class PlayerMovement : MonoBehaviour
 
     void ResetGame()
     {
-        problemGenerator.secondsPassed = ProblemGenerator.TIMER_SECS;
+        problemGenerator.secondsPassed = problemGenerator.timerSeconds;
         problemGenerator.DrawAll();
     }
 }

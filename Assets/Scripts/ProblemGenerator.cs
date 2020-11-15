@@ -12,11 +12,11 @@ public class ProblemGenerator : MonoBehaviour
         MINUS
     }
 
-    public static readonly int MIN_SUM = 20;
-    public static readonly int MAX_SUM = 20;
-    public static readonly int TIMER_SECS = 10;
-    public static int NUMBER_OF_PROBLEMS = 5;
+    public static readonly int MIN_SUM = 5;
+    public static readonly int MAX_SUM = 99;
 
+    public int timerSeconds = 10;
+    public int numberOfProblems = 5;
     public enum Type { Arithmetic, Equation };
     public GameObject numberObject;
     public Sprite[] numberSprites;
@@ -37,6 +37,8 @@ public class ProblemGenerator : MonoBehaviour
     private List<Vector2> numbersPresentRangesY;
     private List<Vector2> otherRangesY;
     private List<GameObject> answerObjects;
+    private Animator curtainAnimator;
+    public static bool gameOver = false;
 
     // Start is called before the first frame update
     void Start()
@@ -52,6 +54,7 @@ public class ProblemGenerator : MonoBehaviour
         otherRangesY = new List<Vector2>();
         numbersPresentObjects = new List<GameObject>();
         timerObject = new GameObject("NumbersPresent");
+        curtainAnimator = GameObject.Find("Curtain").GetComponent<Animator>();
         secondsPassed = 0;
         drawObjects();
         InvokeRepeating("DrawAll", 0, 1.0f);
@@ -59,18 +62,22 @@ public class ProblemGenerator : MonoBehaviour
 
     public void DrawAll()
     {
-        if (number_of_question > NUMBER_OF_PROBLEMS)
-        {
-            //Debug.Log(PlayerMovement.correctAns.ToString() + "/" + NUMBER_OF_PROBLEMS.ToString());
-            number_of_question = 1;
-            PlayerMovement.correctAns = 0;
-            SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1) % 6);
-            // game over
-            return;
-        }
-        if (secondsPassed == TIMER_SECS)
+        if (secondsPassed == timerSeconds)
         {
             number_of_question++;
+            if (ProblemGenerator.number_of_question > numberOfProblems)
+            {
+
+                curtainAnimator.SetTrigger("FadeOut");
+                ProblemGenerator.number_of_question = 1;
+                PlayerMovement.correctAns = 0;
+                PlayerMovement.incorrectAns = 0;
+                // SpawnScript uses this
+                gameOver = true;
+                Invoke("LoadNextScene", 1f);
+                // Game Over
+                return;
+            }
             foreach (GameObject numbersPresentObjcet in numbersPresentObjects)
             {
                 Destroy(numbersPresentObjcet);
@@ -87,6 +94,11 @@ public class ProblemGenerator : MonoBehaviour
             secondsPassed++;
         }
         drawTimer();
+    }
+
+    void LoadNextScene()
+    {
+        SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1) % 6);
     }
 
     void drawObjects()
@@ -240,7 +252,7 @@ public class ProblemGenerator : MonoBehaviour
         Transform parent = timerObject.transform;
         float xPosition = 0f;
         int count = 0;
-        foreach (char ch in (TIMER_SECS - secondsPassed).ToString())
+        foreach (char ch in (timerSeconds - secondsPassed).ToString())
         {
             GameObject obj = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity, parent);
             obj.GetComponent<SpriteRenderer>().sprite = timerSprites[(int)char.GetNumericValue(ch)];

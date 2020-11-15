@@ -138,8 +138,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9949852777fe1c34b9b2bb48dd18d0f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  respawnPoint: {x: 0, y: 0}
-  textMesh: {fileID: 0}
+  correctText: {fileID: 0}
+  incorrectText: {fileID: 0}
 --- !u!58 &517757485
 CircleCollider2D:
   m_ObjectHideFlags: 0
