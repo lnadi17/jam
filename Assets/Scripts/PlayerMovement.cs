@@ -10,7 +10,8 @@ public class PlayerMovement : MonoBehaviour
     public Color incorrectColor;
 
     private Text correctText;
-    private Text incorrectText;
+    [HideInInspector]
+    public Text incorrectText;
 
     private float speed = 10;
     private float force = 100;
@@ -20,7 +21,8 @@ public class PlayerMovement : MonoBehaviour
     private Animator anim;
     private bool lookinLeft = false;
     private float forceX = 0, forceY = 0;
-    private bool isDying = false;
+    [HideInInspector]
+    public static bool isDying = false;
     private ProblemGenerator problemGenerator;
     private GameObject progressBarObject;
     private GameObject currentProgressBar;
@@ -28,8 +30,10 @@ public class PlayerMovement : MonoBehaviour
     private string currentGroundTag = "Untagged";
     private string lastGroundTag = "Untagged";
     private List<string> groundTags = new List<string>();
-    private bool ignoreTriggerExit = false;
+    [HideInInspector]
+    public bool ignoreTriggerExit = false;
     public static int correctAns = 0, incorrectAns = 0;
+    private Animator curtainAnimator;
 
     // Start is called before the first frame update
     void Start()
@@ -42,6 +46,10 @@ public class PlayerMovement : MonoBehaviour
         correctText = GameObject.Find("Correct_Score").GetComponent<Text>();
         incorrectText = GameObject.Find("Incorrect_Score").GetComponent<Text>();
         progressBarObject = GameObject.Find("ProgressBar");
+        curtainAnimator = GameObject.Find("Curtain").GetComponent<Animator>();
+        isDying = false;
+        //problemGenerator.DrawLevel();
+        //problemGenerator.secondsPassed = 0;
     }
 
     // Update is called once per frame
@@ -85,27 +93,23 @@ public class PlayerMovement : MonoBehaviour
         string otherTag = collision.gameObject.tag;
         if (otherTag == "A_1" || otherTag == "A_2" || otherTag == "A_3")
         {
-            ignoreTriggerExit = true;
-            if (problemGenerator.correctTag == otherTag)
-            {
-                SoundManagerScript.PlaySound("score");
-                correctAns++;
-                correctText.text = correctAns.ToString();
-                UpdateLevelProgress(true);
-            }
-            else
-            {
-                incorrectAns++;
-                Debug.Log(incorrectAns);
-                incorrectText.text = incorrectAns.ToString();
-                SoundManagerScript.PlaySound("score");
-                UpdateLevelProgress(false);
-            }
-            problemGenerator.secondsPassed = problemGenerator.timerSeconds;
-            problemGenerator.DrawAll();
-            Destroy(gameObject);
-            Debug.Log("After destroy");
-            return;
+            //ignoreTriggerExit = true;
+            //if (problemGenerator.correctTag == otherTag)
+            //{
+            //    SoundManagerScript.PlaySound("score");
+            //    correctAns++;
+            //    correctText.text = correctAns.ToString();
+            //    UpdateLevelProgress(true);
+            //}
+            //else
+            //{
+            //    incorrectAns++;
+            //    incorrectText.text = incorrectAns.ToString();
+            //    SoundManagerScript.PlaySound("score");
+            //    UpdateLevelProgress(false);
+            //}
+            //Destroy(gameObject);
+            //return;
         }
         groundTags.Add(collision.gameObject.tag);
         //collision.GetComponent<SpriteRenderer>().color = Color.gray;
@@ -115,7 +119,7 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Draws correct level bar if passed true
-    private void UpdateLevelProgress(bool isCorrect)
+    public void UpdateLevelProgress(bool isCorrect)
     {
         if (ProblemGenerator.number_of_question == 1)
         {
@@ -142,29 +146,27 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnTriggerExit2D(Collider2D collision)
     {
-        string otherTag = collision.gameObject.tag;
         if (ignoreTriggerExit) {
             return;
         }
         groundTags.Remove(collision.gameObject.tag);
         //collision.GetComponent<SpriteRenderer>().color = Color.white;
         if (groundTags.Count == 0) {
-            // Die
-            UpdateLevelProgress(false);
-            SoundManagerScript.PlaySound("death");
             isDying = true;
+            ignoreTriggerExit = true;
             if (collision.transform.position.x < transform.position.x)
             {
                 anim.SetTrigger("deathRight");
-            } else
+            }
+            else
             {
                 anim.SetTrigger("deathLeft");
             }
-            Destroy(gameObject, 2f);
-            incorrectAns++;
+            SoundManagerScript.PlaySound("death");
+            PlayerMovement.incorrectAns++;
             incorrectText.text = incorrectAns.ToString();
-            Debug.Log("Increased Incorrect Answer");
-            Invoke(nameof(ResetGame), 1.5f);
+            UpdateLevelProgress(false);
+            Invoke("Fall", 2f);
         } else
         {
             lastGroundTag = currentGroundTag;
@@ -176,6 +178,28 @@ public class PlayerMovement : MonoBehaviour
         //    Debug.Log(x);
         //}
         //Debug.Log("----");
+    }
+
+    void Fall()
+    {
+        problemGenerator.secondsPassed = 0;
+        ProblemGenerator.number_of_question++;
+        if (ProblemGenerator.number_of_question > problemGenerator.numberOfProblems)
+        {
+            Destroy(GameObject.Find("Spawner"));
+            curtainAnimator.SetTrigger("FadeOut");
+            Invoke("LoadNextScene", 2f);
+        }
+        else
+        {
+            problemGenerator.DrawLevel();
+        }
+        Destroy(gameObject);
+    }
+
+    void LoadNextScene()
+    {
+        SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1) % 6);
     }
 
     void UpdateSpeedAndForce()
@@ -223,11 +247,5 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         return currentResult;
-    }
-
-    void ResetGame()
-    {
-        problemGenerator.secondsPassed = problemGenerator.timerSeconds;
-        problemGenerator.DrawAll();
     }
 }

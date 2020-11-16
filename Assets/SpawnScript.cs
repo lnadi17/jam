@@ -17,14 +17,9 @@ public class SpawnScript : MonoBehaviour
     {
         while (true)
         {
-            if (ProblemGenerator.gameOver)
+            if (GameObject.Find("Player(Clone)") == null)
             {
-                // do nothing
-            } else if (GameObject.Find("Player(Clone)") == null)
-            {
-                Debug.Log("Before Spawn");
                 Instantiate(player, transform.position, Quaternion.identity);
-                Debug.Log("After Spawn");
             }
             yield return new WaitForSeconds(1f);
         }

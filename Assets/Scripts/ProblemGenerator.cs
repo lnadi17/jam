@@ -55,44 +55,45 @@ public class ProblemGenerator : MonoBehaviour
         numbersPresentObjects = new List<GameObject>();
         timerObject = new GameObject("NumbersPresent");
         curtainAnimator = GameObject.Find("Curtain").GetComponent<Animator>();
+        //
         secondsPassed = 0;
+        number_of_question = 1;
+        PlayerMovement.correctAns = 0;
+        PlayerMovement.incorrectAns = 0;
+        //
         drawObjects();
-        InvokeRepeating("DrawAll", 0, 1.0f);
+        InvokeRepeating("DrawTimer", 0, 1.0f);
     }
 
-    public void DrawAll()
+    public void DrawLevel()
     {
-        if (gameOver) { return; }
-        if (secondsPassed == timerSeconds)
+        //if (gameOver) { return; }
+        //if (secondsPassed == timerSeconds)
+        //{
+        //    number_of_question++;
+        //    if (ProblemGenerator.number_of_question > numberOfProblems) {
+        //        curtainAnimator.SetTrigger("FadeOut");
+        //        ProblemGenerator.number_of_question = 1;
+        //        PlayerMovement.correctAns = 0;
+        //        PlayerMovement.incorrectAns = 0;
+        //        // SpawnScript uses this
+        //        gameOver = true;
+        //        Invoke("LoadNextScene", 1f);
+        //        // Game Over
+        //        return;
+        //    }
+        //}
+        foreach (GameObject numbersPresentObjcet in numbersPresentObjects)
         {
-            number_of_question++;
-            if (ProblemGenerator.number_of_question > numberOfProblems) {
-                curtainAnimator.SetTrigger("FadeOut");
-                ProblemGenerator.number_of_question = 1;
-                PlayerMovement.correctAns = 0;
-                PlayerMovement.incorrectAns = 0;
-                // SpawnScript uses this
-                gameOver = true;
-                Invoke("LoadNextScene", 1f);
-                // Game Over
-                return;
-            }
-            foreach (GameObject numbersPresentObjcet in numbersPresentObjects)
-            {
-                Destroy(numbersPresentObjcet);
-            }
-            numbersPresentObjects.Clear();
-            numbersPresentRangesX.Clear();
-            numbersPresentRangesY.Clear();
-            otherRangesX.Clear();
-            otherRangesY.Clear();
-            secondsPassed = 0;
-            drawObjects();
-        } else
-        {
-            secondsPassed++;
+            Destroy(numbersPresentObjcet);
         }
-        drawTimer();
+        numbersPresentObjects.Clear();
+        numbersPresentRangesX.Clear();
+        numbersPresentRangesY.Clear();
+        otherRangesX.Clear();
+        otherRangesY.Clear();
+        secondsPassed = 0;
+        drawObjects();
     }
 
     void LoadNextScene()
@@ -244,13 +245,45 @@ public class ProblemGenerator : MonoBehaviour
         numbersPresentObjects.Add(numbersPresent);
     }
 
-    void drawTimer()
+    void DrawTimer()
     {
+        if (GameObject.Find("Spawner") == null) { 
+            // Don't update timer when level's switching
+            return;
+        }
+        if (secondsPassed == timerSeconds + 1 && !PlayerMovement.isDying)
+        {
+            secondsPassed = 0;
+            GameObject player = GameObject.Find("Player(Clone)");
+            // Lose
+            Debug.Log("SecondsPassed = 0");
+            PlayerMovement.incorrectAns++;
+            player.GetComponent<PlayerMovement>().incorrectText.text = PlayerMovement.incorrectAns.ToString();
+            player.GetComponent<PlayerMovement>().ignoreTriggerExit = true;
+            SoundManagerScript.PlaySound("death");
+            player.GetComponent<PlayerMovement>().UpdateLevelProgress(false);
+            number_of_question++;
+            Destroy(player);
+            if (number_of_question > numberOfProblems)
+            {
+                Destroy(GameObject.Find("Spawner"));
+                curtainAnimator.SetTrigger("FadeOut");
+                Invoke("LoadNextScene", 2f);
+                return;
+            } else
+            {
+                DrawLevel();
+            }
+        }
         Destroy(timerObject);
         timerObject = new GameObject("NumbersPresent");
         Transform parent = timerObject.transform;
         float xPosition = 0f;
         int count = 0;
+        if (secondsPassed > timerSeconds)
+        {
+            secondsPassed = timerSeconds;
+        }
         foreach (char ch in (timerSeconds - secondsPassed).ToString())
         {
             GameObject obj = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity, parent);
@@ -259,9 +292,11 @@ public class ProblemGenerator : MonoBehaviour
             xPosition += xOffset;
             count++;
         }
+        Debug.Log("Drew timer");
         parent.position = new Vector2(xOffset / 2 - count * xOffset / 2, -4.5f);
         otherRangesX.Add(new Vector2(parent.position.x, parent.position.x + count * xOffset));
         otherRangesY.Add(new Vector2(parent.position.y, parent.position.y + numberSprites[0].bounds.size.x));
+        secondsPassed++;
     }
 
     Vector2Int AdditionProblem(int minSum, int maxSum)
