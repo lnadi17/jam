@@ -1946,16 +1946,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6005368303167915814, guid: f3190da8e06a81b42826447e84f3475a,
-        type: 3}
-      propertyPath: timerSeconds
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6005368303167915814, guid: f3190da8e06a81b42826447e84f3475a,
-        type: 3}
-      propertyPath: numberOfProblems
-      value: 5
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f3190da8e06a81b42826447e84f3475a, type: 3}
 --- !u!1001 &611338380
@@ -3043,31 +3033,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1988647276}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &872468158 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 872468158, guid: a6f37718fe658aa409a48fdad38c508e,
-    type: 3}
-  m_PrefabInstance: {fileID: 3632485872350720207}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &872468162
-Animator:
-  serializedVersion: 3
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 872468158}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: b8c575bbe4da85f41afd78c893f2f3e6, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &880733999
 GameObject:
   m_ObjectHideFlags: 0
@@ -4012,11 +3977,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: SoundManager
-      objectReference: {fileID: 0}
-    - target: {fileID: 6081242753078946405, guid: 921a0ad95c8a029459861c2e4b2c78d1,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7119089123703208013, guid: 921a0ad95c8a029459861c2e4b2c78d1,
         type: 3}
@@ -6950,10 +6910,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 872468160, guid: a6f37718fe658aa409a48fdad38c508e, type: 3}
-      propertyPath: m_Color.a
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 3632485871659069330, guid: a6f37718fe658aa409a48fdad38c508e,
         type: 3}
       propertyPath: m_Name
@@ -7069,10 +7025,5 @@ PrefabInstance:
       propertyPath: m_Camera
       value: 
       objectReference: {fileID: 787423100}
-    - target: {fileID: 3632485871659069359, guid: a6f37718fe658aa409a48fdad38c508e,
-        type: 3}
-      propertyPath: m_SortingOrder
-      value: 11
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a6f37718fe658aa409a48fdad38c508e, type: 3}
