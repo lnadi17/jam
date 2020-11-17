@@ -93,29 +93,39 @@ public class PlayerMovement : MonoBehaviour
         string otherTag = collision.gameObject.tag;
         if (otherTag == "A_1" || otherTag == "A_2" || otherTag == "A_3")
         {
-            //ignoreTriggerExit = true;
-            //if (problemGenerator.correctTag == otherTag)
-            //{
-            //    SoundManagerScript.PlaySound("score");
-            //    correctAns++;
-            //    correctText.text = correctAns.ToString();
-            //    UpdateLevelProgress(true);
-            //}
-            //else
-            //{
-            //    incorrectAns++;
-            //    incorrectText.text = incorrectAns.ToString();
-            //    SoundManagerScript.PlaySound("score");
-            //    UpdateLevelProgress(false);
-            //}
-            //Destroy(gameObject);
-            //return;
+            isDying = true;
+            ignoreTriggerExit = true;
+            if (problemGenerator.correctTag == otherTag)
+            {
+                SoundManagerScript.PlaySound("score");
+                correctAns++;
+                correctText.text = correctAns.ToString();
+                UpdateLevelProgress(true);
+            }
+            else
+            {
+                incorrectAns++;
+                incorrectText.text = incorrectAns.ToString();
+                SoundManagerScript.PlaySound("score");
+                UpdateLevelProgress(false);
+            }
+            if (ProblemGenerator.number_of_question == problemGenerator.numberOfProblems)
+            {
+                Invoke("Fall", 2f);
+                sr.enabled = false;
+            }
+            else
+            {
+                Fall();
+            }
+        } else
+        {
+            groundTags.Add(collision.gameObject.tag);
+            //collision.GetComponent<SpriteRenderer>().color = Color.gray;
+            lastGroundTag = currentGroundTag;
+            currentGroundTag = FindMostFrequent(groundTags);
+            if (currentGroundTag != lastGroundTag) UpdateSpeedAndForce();
         }
-        groundTags.Add(collision.gameObject.tag);
-        //collision.GetComponent<SpriteRenderer>().color = Color.gray;
-        lastGroundTag = currentGroundTag;
-        currentGroundTag = FindMostFrequent(groundTags);
-        if (currentGroundTag != lastGroundTag) UpdateSpeedAndForce();
     }
 
     // Draws correct level bar if passed true
@@ -189,16 +199,18 @@ public class PlayerMovement : MonoBehaviour
             Destroy(GameObject.Find("Spawner"));
             curtainAnimator.SetTrigger("FadeOut");
             Invoke("LoadNextScene", 2f);
+            sr.enabled = false;
         }
         else
         {
             problemGenerator.DrawLevel();
+            Destroy(gameObject);
         }
-        Destroy(gameObject);
     }
 
-    void LoadNextScene()
+    private void LoadNextScene()
     {
+        Debug.Log("Invoked");
         SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1) % 6);
     }
 

@@ -96,8 +96,9 @@ public class ProblemGenerator : MonoBehaviour
         drawObjects();
     }
 
-    void LoadNextScene()
+    private void LoadNextScene()
     {
+        Debug.Log("about to from timer");
         SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1) % 6);
     }
 
@@ -256,7 +257,6 @@ public class ProblemGenerator : MonoBehaviour
             secondsPassed = 0;
             GameObject player = GameObject.Find("Player(Clone)");
             // Lose
-            Debug.Log("SecondsPassed = 0");
             PlayerMovement.incorrectAns++;
             player.GetComponent<PlayerMovement>().incorrectText.text = PlayerMovement.incorrectAns.ToString();
             player.GetComponent<PlayerMovement>().ignoreTriggerExit = true;
@@ -292,7 +292,6 @@ public class ProblemGenerator : MonoBehaviour
             xPosition += xOffset;
             count++;
         }
-        Debug.Log("Drew timer");
         parent.position = new Vector2(xOffset / 2 - count * xOffset / 2, -4.5f);
         otherRangesX.Add(new Vector2(parent.position.x, parent.position.x + count * xOffset));
         otherRangesY.Add(new Vector2(parent.position.y, parent.position.y + numberSprites[0].bounds.size.x));
