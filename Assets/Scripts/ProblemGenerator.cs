@@ -240,7 +240,7 @@ public class ProblemGenerator : MonoBehaviour
             xPosition += xOffset;
             count++;
         }
-        parent.position = new Vector2(answerObjects[index].transform.position.x, answerObjects[index].transform.position.y);
+        parent.position = new Vector2(answerObjects[index].transform.position.x + xOffset / 2 - count * xOffset / 2, answerObjects[index].transform.position.y);
         //numbersPresentRangesX.Add(new Vector2(parent.position.x, parent.position.x + count * xOffset));
         //numbersPresentRangesY.Add(new Vector2(parent.position.y, parent.position.y + numberSprites[0].bounds.size.x));
         numbersPresentObjects.Add(numbersPresent);
