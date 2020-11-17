@@ -216,19 +216,19 @@ public class PlayerMovement : MonoBehaviour
 
     void UpdateSpeedAndForce()
     {
-        if (currentGroundTag == "Grass_1")
+        if (currentGroundTag == "Normal")
         {
             speed = 2.5f;
             force = 100;
             rb.drag = 10;
         }
-        else if (currentGroundTag == "Grass_4") 
+        else if (currentGroundTag == "Slow") 
         {
             speed = 0.5f;
             force = 50;
             rb.drag = 20;
         }
-        else if (currentGroundTag == "Grass_7" || currentGroundTag == "Grass_8")
+        else if (currentGroundTag == "Slippery")
         {
             speed = 1.6f;
             force = 30;

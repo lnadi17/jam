@@ -4,17 +4,12 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Grass_1
-  - Grass_2
-  - Grass_3
-  - Grass_4
-  - Grass_5
-  - Grass_6
-  - Grass_7
-  - Grass_8
   - A_1
   - A_2
   - A_3
+  - Normal
+  - Slow
+  - Slippery
   layers:
   - Default
   - TransparentFX
