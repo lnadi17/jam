@@ -138,8 +138,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9949852777fe1c34b9b2bb48dd18d0f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  normalSettings: {x: 1.5, y: 30, z: 4}
+  slowSettings: {x: 0.8, y: 15, z: 6}
+  slipperySettings: {x: 2, y: 5, z: 0.1}
   correctColor: {r: 0, g: 0.78039217, b: 0.4811321, a: 1}
   incorrectColor: {r: 0.83137256, g: 0.36845854, b: 0.34901962, a: 1}
+  incorrectText: {fileID: 0}
+  ignoreTriggerExit: 0
 --- !u!58 &517757485
 CircleCollider2D:
   m_ObjectHideFlags: 0

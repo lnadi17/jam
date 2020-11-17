@@ -6,6 +6,13 @@ using UnityEngine.SceneManagement;
 
 public class PlayerMovement : MonoBehaviour
 {
+    [Header("Normal Settings (Speed/Force/Drag)")]
+    public Vector3 normalSettings;
+    [Header("Slow Settings (Speed/Force/Drag)")]
+    public Vector3 slowSettings;
+    [Header("Slippery Settings (Speed/Force/Drag)")]
+    public Vector3 slipperySettings;
+
     public Color correctColor;
     public Color incorrectColor;
 
@@ -58,23 +65,54 @@ public class PlayerMovement : MonoBehaviour
         forceX = 0;
         forceY = 0;
         if (isDying) { rb.velocity = Vector2.zero; return; }
-        if (Input.GetKey(KeyCode.DownArrow) && rb.velocity.y > -speed)
+        //if (Input.GetKey(KeyCode.DownArrow) && rb.velocity.y > -speed)
+        //{
+        //    forceY -= force;
+        //}
+        //if (Input.GetKey(KeyCode.UpArrow) && rb.velocity.y < speed)
+        //{
+        //    forceY += force;
+        //}
+        //if (Input.GetKey(KeyCode.LeftArrow) && rb.velocity.x > -speed)
+        //{
+        //    lookinLeft = true;
+        //    forceX -= force;
+        //}
+        //if (Input.GetKey(KeyCode.RightArrow) && rb.velocity.x < speed)
+        //{
+        //    lookinLeft = false;
+        //    forceX += force;
+        //}
+        // forceX *= 0.5f;
+        // forceY *= 0.5f;
+
+        // Code For accelerometer
+        
+        Vector3 dir = Input.acceleration;
+
+        Debug.Log(dir);
+        // clamp acceleration vector to unit sphere
+        if (dir.sqrMagnitude > 1)
+            dir.Normalize();
+        Debug.Log("Normalized:" + dir.ToString());
+
+        if (dir.y < 0 && rb.velocity.y > -speed)
         {
-            forceY -= force;
+            forceY = force * -dir.y;
         }
-        if (Input.GetKey(KeyCode.UpArrow) && rb.velocity.y < speed)
+        if (dir.y > 0 && rb.velocity.y < speed)
         {
-            forceY += force;
+            forceY = force * dir.y;
         }
-        if (Input.GetKey(KeyCode.LeftArrow) && rb.velocity.x > -speed)
+        if (dir.x < 0 && rb.velocity.x > -speed)
         {
             lookinLeft = true;
-            forceX -= force;
+            forceX = force * -dir.x;
         }
-        if (Input.GetKey(KeyCode.RightArrow) && rb.velocity.x < speed)
+        if (dir.x > 0 && rb.velocity.x < speed)
         {
             lookinLeft = false;
-            forceX += force;
+            forceX = force * dir.x;
         }
     }
 
@@ -83,6 +121,7 @@ public class PlayerMovement : MonoBehaviour
         rb.AddForce(new Vector2(forceX, forceY));
         if (rb.velocity.y > speed) rb.velocity = new Vector2(rb.velocity.x, speed);
         else if (rb.velocity.y < -speed) rb.velocity = new Vector2(rb.velocity.x, -speed);
+
         if (rb.velocity.x > speed) rb.velocity = new Vector2(speed, rb.velocity.y);
         else if (rb.velocity.x < -speed) rb.velocity = new Vector2(-speed, rb.velocity.y);
         sr.flipX = lookinLeft;
@@ -218,21 +257,21 @@ public class PlayerMovement : MonoBehaviour
     {
         if (currentGroundTag == "Normal")
         {
-            speed = 2.5f;
-            force = 100;
-            rb.drag = 10;
+            speed = normalSettings.x;
+            force = normalSettings.y;
+            rb.drag = normalSettings.z;
         }
         else if (currentGroundTag == "Slow") 
         {
-            speed = 0.5f;
-            force = 50;
-            rb.drag = 20;
+            speed = slowSettings.x;
+            force = slowSettings.y;
+            rb.drag = slowSettings.z;
         }
         else if (currentGroundTag == "Slippery")
         {
-            speed = 1.6f;
-            force = 30;
-            rb.drag = 0.1f;
+            speed = slipperySettings.x;
+            force = slipperySettings.y;
+            rb.drag = slipperySettings.z;
         }
     }
 
