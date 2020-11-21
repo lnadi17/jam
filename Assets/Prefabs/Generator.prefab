@@ -60,8 +60,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 19319525407f93e45b7d83b409755c35, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timerSeconds: 4
-  numberOfProblems: 3
+  timerSeconds: 20
+  numberOfProblems: 5
   numberObject: {fileID: 9072931274174841735, guid: 568b70bb4bb370241989947652c504ea,
     type: 3}
   numberSprites:
@@ -117,7 +117,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: db8c951d038238d448efaa3fe412b557, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 0
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0

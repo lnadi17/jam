@@ -10,6 +10,7 @@ TagManager:
   - Normal
   - Slow
   - Slippery
+  - Grass_1
   layers:
   - Default
   - TransparentFX
@@ -47,6 +48,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Obstacle
+  - name: Player
+    uniqueID: 1368315683
+    locked: 0
+  - name: Ground
     uniqueID: 2285292725
+    locked: 0
+  - name: Obstacle
+    uniqueID: 1367401823
     locked: 0

@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-public class PlayerMovement : MonoBehaviour
-{
+public class PlayerMovement : MonoBehaviour {
     [Header("Normal Settings (Speed/Force/Drag)")]
     public Vector3 normalSettings;
     [Header("Slow Settings (Speed/Force/Drag)")]
@@ -43,8 +42,7 @@ public class PlayerMovement : MonoBehaviour
     private Animator curtainAnimator;
 
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
         rb = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
@@ -60,155 +58,133 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
-    {
+    void Update() {
         forceX = 0;
         forceY = 0;
         if (isDying) { rb.velocity = Vector2.zero; return; }
-        //if (Input.GetKey(KeyCode.DownArrow) && rb.velocity.y > -speed)
-        //{
-        //    forceY -= force;
-        //}
-        //if (Input.GetKey(KeyCode.UpArrow) && rb.velocity.y < speed)
-        //{
-        //    forceY += force;
-        //}
-        //if (Input.GetKey(KeyCode.LeftArrow) && rb.velocity.x > -speed)
-        //{
-        //    lookinLeft = true;
-        //    forceX -= force;
-        //}
-        //if (Input.GetKey(KeyCode.RightArrow) && rb.velocity.x < speed)
-        //{
-        //    lookinLeft = false;
-        //    forceX += force;
-        //}
-        // forceX *= 0.5f;
-        // forceY *= 0.5f;
+
+        // Code for keyboard
+
+        if (Input.GetKey(KeyCode.DownArrow) && rb.velocity.y > -speed) {
+            forceY -= force;
+        }
+        if (Input.GetKey(KeyCode.UpArrow) && rb.velocity.y < speed) {
+            forceY += force;
+        }
+        if (Input.GetKey(KeyCode.LeftArrow) && rb.velocity.x > -speed) {
+            lookinLeft = true;
+            forceX -= force;
+        }
+        if (Input.GetKey(KeyCode.RightArrow) && rb.velocity.x < speed) {
+            lookinLeft = false;
+            forceX += force;
+        }
+        forceX *= 0.5f;
+        forceY *= 0.5f;
 
         // Code For accelerometer
-        
-        Vector3 dir = Input.acceleration;
 
-        Debug.Log(dir);
-        // clamp acceleration vector to unit sphere
-        if (dir.sqrMagnitude > 1)
-            dir.Normalize();
-        Debug.Log("Normalized:" + dir.ToString());
+        //Vector3 dir = Input.acceleration;
 
-        if (dir.y < 0 && rb.velocity.y > -speed)
-        {
-            forceY = force * -dir.y;
-        }
-        if (dir.y > 0 && rb.velocity.y < speed)
-        {
-            forceY = force * dir.y;
-        }
-        if (dir.x < 0 && rb.velocity.x > -speed)
-        {
-            lookinLeft = true;
-            forceX = force * -dir.x;
-        }
-        if (dir.x > 0 && rb.velocity.x < speed)
-        {
-            lookinLeft = false;
-            forceX = force * dir.x;
-        }
+        //// clamp acceleration vector to unit sphere
+        //if (dir.sqrMagnitude > 1)
+        //    dir.Normalize();
+
+        //if (dir.y < 0 && rb.velocity.y > -speed) {
+        //    forceY = force * dir.y;
+        //}
+        //if (dir.y > 0 && rb.velocity.y < speed) {
+        //    forceY = force * dir.y;
+        //}
+        //if (dir.x < 0 && rb.velocity.x > -speed) {
+        //    lookinLeft = true;
+        //    forceX = force * dir.x;
+        //}
+        //if (dir.x > 0 && rb.velocity.x < speed) {
+        //    lookinLeft = false;
+        //    forceX = force * dir.x;
+        //}
     }
 
-    private void FixedUpdate()
-    {
+    private void FixedUpdate() {
         rb.AddForce(new Vector2(forceX, forceY));
-        if (rb.velocity.y > speed) rb.velocity = new Vector2(rb.velocity.x, speed);
-        else if (rb.velocity.y < -speed) rb.velocity = new Vector2(rb.velocity.x, -speed);
+        if (rb.velocity.y > speed)
+            rb.velocity = new Vector2(rb.velocity.x, speed);
+        else if (rb.velocity.y < -speed)
+            rb.velocity = new Vector2(rb.velocity.x, -speed);
 
-        if (rb.velocity.x > speed) rb.velocity = new Vector2(speed, rb.velocity.y);
-        else if (rb.velocity.x < -speed) rb.velocity = new Vector2(-speed, rb.velocity.y);
+        if (rb.velocity.x > speed)
+            rb.velocity = new Vector2(speed, rb.velocity.y);
+        else if (rb.velocity.x < -speed)
+            rb.velocity = new Vector2(-speed, rb.velocity.y);
         sr.flipX = lookinLeft;
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
+    private void OnTriggerEnter2D(Collider2D collision) {
         string otherTag = collision.gameObject.tag;
-        if (otherTag == "A_1" || otherTag == "A_2" || otherTag == "A_3")
-        {
+        if (otherTag == "A_1" || otherTag == "A_2" || otherTag == "A_3") {
             isDying = true;
             ignoreTriggerExit = true;
-            if (problemGenerator.correctTag == otherTag)
-            {
+            if (problemGenerator.correctTag == otherTag) {
                 SoundManagerScript.PlaySound("score");
                 correctAns++;
                 correctText.text = correctAns.ToString();
                 UpdateLevelProgress(true);
-            }
-            else
-            {
+            } else {
                 incorrectAns++;
                 incorrectText.text = incorrectAns.ToString();
                 SoundManagerScript.PlaySound("score");
                 UpdateLevelProgress(false);
             }
-            if (ProblemGenerator.number_of_question == problemGenerator.numberOfProblems)
-            {
+            if (ProblemGenerator.number_of_question == problemGenerator.numberOfProblems) {
                 Invoke("Fall", 2f);
                 sr.enabled = false;
-            }
-            else
-            {
+                transform.GetChild(0).GetComponent<SpriteRenderer>().enabled = false;
+            } else {
                 Fall();
             }
-        } else
-        {
+        } else {
             groundTags.Add(collision.gameObject.tag);
-            //collision.GetComponent<SpriteRenderer>().color = Color.gray;
+            collision.GetComponent<SpriteRenderer>().color = Color.gray; //
             lastGroundTag = currentGroundTag;
             currentGroundTag = FindMostFrequent(groundTags);
-            if (currentGroundTag != lastGroundTag) UpdateSpeedAndForce();
+            if (currentGroundTag != lastGroundTag)
+                UpdateSpeedAndForce();
         }
     }
 
     // Draws correct level bar if passed true
-    public void UpdateLevelProgress(bool isCorrect)
-    {
-        if (ProblemGenerator.number_of_question == 1)
-        {
+    public void UpdateLevelProgress(bool isCorrect) {
+        if (ProblemGenerator.number_of_question == 1) {
             progressBarObject.SetActive(true);
             // 3 is the width of the board
             progressBarObject.transform.localScale = new Vector2(3f / problemGenerator.numberOfProblems, 1);
             currentProgressBar = progressBarObject;
-        } else
-        {
-            Vector2 newPosition = new Vector2(progressBarObject.transform.position.x + progressBarObject.transform.localScale.x * (ProblemGenerator.number_of_question - 1), 
+        } else {
+            Vector2 newPosition = new Vector2(progressBarObject.transform.position.x + progressBarObject.transform.localScale.x * (ProblemGenerator.number_of_question - 1),
                                               progressBarObject.transform.position.y);
             currentProgressBar = Instantiate(progressBarObject, newPosition, Quaternion.identity);
             currentProgressBar.transform.localScale = new Vector2(3f / problemGenerator.numberOfProblems, 1);
         }
-        if (isCorrect)
-        {
+        if (isCorrect) {
             currentProgressBar.GetComponent<SpriteRenderer>().color = correctColor;
-        }
-        else
-        {
+        } else {
             currentProgressBar.GetComponent<SpriteRenderer>().color = incorrectColor;
         }
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
+    private void OnTriggerExit2D(Collider2D collision) {
         if (ignoreTriggerExit) {
             return;
         }
         groundTags.Remove(collision.gameObject.tag);
-        //collision.GetComponent<SpriteRenderer>().color = Color.white;
+        collision.GetComponent<SpriteRenderer>().color = Color.white; //
         if (groundTags.Count == 0) {
             isDying = true;
             ignoreTriggerExit = true;
-            if (collision.transform.position.x < transform.position.x)
-            {
+            if (collision.transform.position.x < transform.position.x) {
                 anim.SetTrigger("deathRight");
-            }
-            else
-            {
+            } else {
                 anim.SetTrigger("deathLeft");
             }
             SoundManagerScript.PlaySound("death");
@@ -216,11 +192,11 @@ public class PlayerMovement : MonoBehaviour
             incorrectText.text = incorrectAns.ToString();
             UpdateLevelProgress(false);
             Invoke("Fall", 2f);
-        } else
-        {
+        } else {
             lastGroundTag = currentGroundTag;
             currentGroundTag = FindMostFrequent(groundTags);
-            if(lastGroundTag != currentGroundTag) UpdateSpeedAndForce();
+            if (lastGroundTag != currentGroundTag)
+                UpdateSpeedAndForce();
         }
         //foreach (string x in groundTags)
         //{
@@ -229,70 +205,53 @@ public class PlayerMovement : MonoBehaviour
         //Debug.Log("----");
     }
 
-    void Fall()
-    {
+    void Fall() {
         problemGenerator.secondsPassed = 0;
         ProblemGenerator.number_of_question++;
-        if (ProblemGenerator.number_of_question > problemGenerator.numberOfProblems)
-        {
+        if (ProblemGenerator.number_of_question > problemGenerator.numberOfProblems) {
             Destroy(GameObject.Find("Spawner"));
             curtainAnimator.SetTrigger("FadeOut");
             Invoke("LoadNextScene", 2f);
-            sr.enabled = false;
-        }
-        else
-        {
+        } else {
             problemGenerator.DrawLevel();
             Destroy(gameObject);
         }
     }
 
-    private void LoadNextScene()
-    {
+    private void LoadNextScene() {
         Debug.Log("Invoked");
         SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1) % 6);
     }
 
-    void UpdateSpeedAndForce()
-    {
-        if (currentGroundTag == "Normal")
-        {
+    void UpdateSpeedAndForce() {
+        if (currentGroundTag == "Normal") {
             speed = normalSettings.x;
             force = normalSettings.y;
             rb.drag = normalSettings.z;
-        }
-        else if (currentGroundTag == "Slow") 
-        {
+        } else if (currentGroundTag == "Slow") {
             speed = slowSettings.x;
             force = slowSettings.y;
             rb.drag = slowSettings.z;
-        }
-        else if (currentGroundTag == "Slippery")
-        {
+        } else if (currentGroundTag == "Slippery") {
             speed = slipperySettings.x;
             force = slipperySettings.y;
             rb.drag = slipperySettings.z;
         }
     }
 
-    string FindMostFrequent(List<string> list)
-    {
+    string FindMostFrequent(List<string> list) {
         list.Sort();
         int max = 1;
         int count = 1;
         string currentResult = list[0];
-        for (int i = 1; i < list.Count; i++)
-        {
-            if (!list[i].Equals(list[i - 1]))
-            {
+        for (int i = 1; i < list.Count; i++) {
+            if (!list[i].Equals(list[i - 1])) {
                 count = 1;
-            } else
-            {
+            } else {
                 count++;
             }
 
-            if (max < count)
-            {
+            if (max < count) {
                 max = count;
                 currentResult = list[i - 1];
             }
