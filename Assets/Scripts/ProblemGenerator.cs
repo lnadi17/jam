@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class ProblemGenerator : MonoBehaviour
-{
+public class ProblemGenerator : MonoBehaviour {
 
-    private enum Operator
-    {
+    private enum Operator {
         PLUS,
         MINUS
     }
@@ -40,9 +38,17 @@ public class ProblemGenerator : MonoBehaviour
     private Animator curtainAnimator;
     public static bool gameOver = false;
 
+    void Awake() {
+        Debug.Log(1 / Camera.main.aspect);
+        Debug.Log(16f / 9f);
+        Debug.Log(5 / Camera.main.aspect / (16f / 9f));
+        Camera.main.orthographicSize = 5 / Camera.main.aspect / (16f / 9f);
+    }
+
     // Start is called before the first frame update
-    void Start()
-    {
+    void Start() {
+        AdjustCamera();
+        //
         answerObjects = new List<GameObject>() {
             GameObject.FindGameObjectWithTag("A_1"),
             GameObject.FindGameObjectWithTag("A_2"),
@@ -65,8 +71,12 @@ public class ProblemGenerator : MonoBehaviour
         InvokeRepeating("DrawTimer", 0, 1.0f);
     }
 
-    public void DrawLevel()
-    {
+    void AdjustCamera() {
+        GameObject.Find("Board").transform.position = new Vector2(0, Camera.main.orthographicSize);
+        GameObject.Find("Timer_Board").transform.position = new Vector2(0, -Camera.main.orthographicSize - 0.15f);
+    }
+
+    public void DrawLevel() {
         //if (gameOver) { return; }
         //if (secondsPassed == timerSeconds)
         //{
@@ -83,8 +93,7 @@ public class ProblemGenerator : MonoBehaviour
         //        return;
         //    }
         //}
-        foreach (GameObject numbersPresentObjcet in numbersPresentObjects)
-        {
+        foreach (GameObject numbersPresentObjcet in numbersPresentObjects) {
             Destroy(numbersPresentObjcet);
         }
         numbersPresentObjects.Clear();
@@ -96,82 +105,70 @@ public class ProblemGenerator : MonoBehaviour
         drawObjects();
     }
 
-    private void LoadNextScene()
-    {
-        Debug.Log("about to from timer");
+    private void LoadNextScene() {
         SceneManager.LoadScene((SceneManager.GetActiveScene().buildIndex + 1) % 6);
     }
 
-    void drawObjects()
-    {
+    void drawObjects() {
         Operator op = getRandomOperator();
         Vector2Int numbers = new Vector2Int(0, 0);
-        switch (op)
-        {
+        switch (op) {
             case Operator.PLUS:
-                numbers = AdditionProblem(MIN_SUM, MAX_SUM);
-                break;
+            numbers = AdditionProblem(MIN_SUM, MAX_SUM);
+            break;
             case Operator.MINUS:
-                numbers = SubtractionProblem(MIN_SUM, MAX_SUM);
-                break;
+            numbers = SubtractionProblem(MIN_SUM, MAX_SUM);
+            break;
         }
         DrawArithmetic(op, numbers);
 
         List<int> possibleAnswers = GetPossibleAnswers(op, numbers, 3);
         int index = 0;
-        foreach (int number in possibleAnswers)
-        {
-            if (number == currentAnswerInt)
-            {
+        foreach (int number in possibleAnswers) {
+            if (number == currentAnswerInt) {
                 correctTag = "A_" + (index + 1).ToString();
             }
             DrawNumber(number, index++);
         }
     }
 
-    List<int> GetPossibleAnswers(Operator op, Vector2Int numbers, int arraySize)
-    {
+    List<int> GetPossibleAnswers(Operator op, Vector2Int numbers, int arraySize) {
         HashSet<int> result = new HashSet<int>();
         int resultNum = 0;
         switch (op) {
             case Operator.PLUS:
-                resultNum = numbers.x + numbers.y;
-                break;
+            resultNum = numbers.x + numbers.y;
+            break;
             case Operator.MINUS:
-                resultNum = numbers.x - numbers.y;
-                break;
+            resultNum = numbers.x - numbers.y;
+            break;
         }
         result.Add(resultNum);
         currentAnswerInt = resultNum;
-        while (result.Count != arraySize)
-        {
+        while (result.Count != arraySize) {
             result.Add(Random.Range(resultNum - 7, resultNum + 8));
         }
         List<int> list = new List<int>();
-        foreach(int item in result)
-        {
+        foreach (int item in result) {
             list.Add(item);
         }
         list.Sort();
         return list;
     }
 
-    private Operator getRandomOperator()
-    {
+    private Operator getRandomOperator() {
         int len = 2;
-        return (Operator) Random.Range(0, len);
+        return (Operator)Random.Range(0, len);
     }
 
-    void DrawArithmetic(Operator op, Vector2Int numbers)
-    {
+    void DrawArithmetic(Operator op, Vector2Int numbers) {
         GameObject numbersPresent = new GameObject("NumbersPresent");
         Transform parent = numbersPresent.transform;
         int count = 0;
         float xPosition = 0f;
         // Draw first
         string firstStr = numbers.x.ToString();
-        foreach (char ch in firstStr)
-        {
+        foreach (char ch in firstStr) {
             GameObject obj = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity, parent);
             obj.GetComponent<SpriteRenderer>().sprite = numberSprites[(int)char.GetNumericValue(ch)];
             obj.GetComponent<SpriteRenderer>().sortingOrder = 10;
@@ -179,16 +176,14 @@ public class ProblemGenerator : MonoBehaviour
             count++;
         }
         // Draw operator
-        if (op == Operator.PLUS)
-        {
+        if (op == Operator.PLUS) {
             GameObject obj = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity, parent);
             obj.GetComponent<SpriteRenderer>().sprite = plus;
             obj.GetComponent<SpriteRenderer>().sortingOrder = 10;
             xPosition += xOffset;
             count++;
         }
-        if (op == Operator.MINUS)
-        {
+        if (op == Operator.MINUS) {
             GameObject obj = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity, parent);
             obj.GetComponent<SpriteRenderer>().sprite = minus;
             obj.GetComponent<SpriteRenderer>().sortingOrder = 10;
@@ -197,8 +192,7 @@ public class ProblemGenerator : MonoBehaviour
         }
         // Draw second
         string secondStr = numbers.y.ToString();
-        foreach (char ch in secondStr)
-        {
+        foreach (char ch in secondStr) {
             GameObject obj = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity, parent);
             obj.GetComponent<SpriteRenderer>().sprite = numberSprites[(int)char.GetNumericValue(ch)];
             obj.GetComponent<SpriteRenderer>().sortingOrder = 10;
@@ -211,20 +205,18 @@ public class ProblemGenerator : MonoBehaviour
         eq.GetComponent<SpriteRenderer>().sprite = equals;
         eq.GetComponent<SpriteRenderer>().sortingOrder = 10;
         count++;
-        parent.position = new Vector2(xOffset / 2 - count * xOffset / 2, 4.57f);
+        parent.position = new Vector2(xOffset / 2 - count * xOffset / 2, Camera.main.orthographicSize - 0.43f);
         otherRangesX.Add(new Vector2(parent.position.x, parent.position.x + count * xOffset));
         otherRangesY.Add(new Vector2(parent.position.y, parent.position.y + numberSprites[0].bounds.size.x));
         numbersPresentObjects.Add(numbersPresent);
     }
 
-    void DrawNumber(int number, int index)
-    {
+    void DrawNumber(int number, int index) {
         GameObject numbersPresent = new GameObject("NumbersPresent");
         Transform parent = numbersPresent.transform;
         float xPosition = 0f;
         int count = 0;
-        if (number < 0)
-        {
+        if (number < 0) {
             GameObject obj = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity, parent);
             obj.GetComponent<SpriteRenderer>().sprite = minus;
             obj.GetComponent<SpriteRenderer>().sortingOrder = 10;
@@ -232,8 +224,7 @@ public class ProblemGenerator : MonoBehaviour
             count++;
             number = -number;
         }
-        foreach (char ch in number.ToString())
-        {
+        foreach (char ch in number.ToString()) {
             GameObject obj = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity, parent);
             obj.GetComponent<SpriteRenderer>().sprite = numberSprites[(int)char.GetNumericValue(ch)];
             obj.GetComponent<SpriteRenderer>().sortingOrder = 10;
@@ -246,14 +237,12 @@ public class ProblemGenerator : MonoBehaviour
         numbersPresentObjects.Add(numbersPresent);
     }
 
-    void DrawTimer()
-    {
-        if (GameObject.Find("Spawner") == null) { 
+    void DrawTimer() {
+        if (GameObject.Find("Spawner") == null) {
             // Don't update timer when level's switching
             return;
         }
-        if (secondsPassed == timerSeconds + 1 && !PlayerMovement.isDying)
-        {
+        if (secondsPassed == timerSeconds + 1 && !PlayerMovement.isDying) {
             secondsPassed = 0;
             GameObject player = GameObject.Find("Player(Clone)");
             // Lose
@@ -264,14 +253,12 @@ public class ProblemGenerator : MonoBehaviour
             player.GetComponent<PlayerMovement>().UpdateLevelProgress(false);
             number_of_question++;
             Destroy(player);
-            if (number_of_question > numberOfProblems)
-            {
+            if (number_of_question > numberOfProblems) {
                 Destroy(GameObject.Find("Spawner"));
                 curtainAnimator.SetTrigger("FadeOut");
                 Invoke("LoadNextScene", 2f);
                 return;
-            } else
-            {
+            } else {
                 DrawLevel();
             }
         }
@@ -280,34 +267,30 @@ public class ProblemGenerator : MonoBehaviour
         Transform parent = timerObject.transform;
         float xPosition = 0f;
         int count = 0;
-        if (secondsPassed > timerSeconds)
-        {
+        if (secondsPassed > timerSeconds) {
             secondsPassed = timerSeconds;
         }
-        foreach (char ch in (timerSeconds - secondsPassed).ToString())
-        {
+        foreach (char ch in (timerSeconds - secondsPassed).ToString()) {
             GameObject obj = Instantiate<GameObject>(numberObject, new Vector2(xPosition, 0), Quaternion.identity, parent);
             obj.GetComponent<SpriteRenderer>().sprite = timerSprites[(int)char.GetNumericValue(ch)];
             obj.GetComponent<SpriteRenderer>().sortingOrder = 10;
             xPosition += xOffset;
             count++;
         }
-        parent.position = new Vector2(xOffset / 2 - count * xOffset / 2, -4.5f);
+        parent.position = new Vector2(xOffset / 2 - count * xOffset / 2, -Camera.main.orthographicSize + 0.5f);
         otherRangesX.Add(new Vector2(parent.position.x, parent.position.x + count * xOffset));
         otherRangesY.Add(new Vector2(parent.position.y, parent.position.y + numberSprites[0].bounds.size.x));
         secondsPassed++;
     }
 
-    Vector2Int AdditionProblem(int minSum, int maxSum)
-    {
+    Vector2Int AdditionProblem(int minSum, int maxSum) {
         int sum = Random.Range(minSum, maxSum);
         int firstNumber = Random.Range(0, sum + 1);
         int secondNumber = sum - firstNumber;
         return new Vector2Int(firstNumber, secondNumber);
     }
 
-    Vector2Int SubtractionProblem(int minFirst, int maxFirst)
-    {
+    Vector2Int SubtractionProblem(int minFirst, int maxFirst) {
         Vector2Int temp = AdditionProblem(minFirst, maxFirst);
         int firstNumber = temp.x + temp.y;
         int secondNumber = temp.x;
