@@ -65,45 +65,45 @@ public class PlayerMovement : MonoBehaviour {
 
         // Code for keyboard
 
-        if (Input.GetKey(KeyCode.DownArrow) && rb.velocity.y > -speed) {
-            forceY -= force;
-        }
-        if (Input.GetKey(KeyCode.UpArrow) && rb.velocity.y < speed) {
-            forceY += force;
-        }
-        if (Input.GetKey(KeyCode.LeftArrow) && rb.velocity.x > -speed) {
-            lookinLeft = true;
-            forceX -= force;
-        }
-        if (Input.GetKey(KeyCode.RightArrow) && rb.velocity.x < speed) {
-            lookinLeft = false;
-            forceX += force;
-        }
-        forceX *= 0.5f;
-        forceY *= 0.5f;
+        // if (Input.GetKey(KeyCode.DownArrow) && rb.velocity.y > -speed) {
+        //     forceY -= force;
+        // }
+        // if (Input.GetKey(KeyCode.UpArrow) && rb.velocity.y < speed) {
+        //     forceY += force;
+        // }
+        // if (Input.GetKey(KeyCode.LeftArrow) && rb.velocity.x > -speed) {
+        //     lookinLeft = true;
+        //     forceX -= force;
+        // }
+        // if (Input.GetKey(KeyCode.RightArrow) && rb.velocity.x < speed) {
+        //     lookinLeft = false;
+        //     forceX += force;
+        // }
+        // forceX *= 0.5f;
+        // forceY *= 0.5f;
 
         // Code For accelerometer
 
-        //Vector3 dir = Input.acceleration;
+        Vector3 dir = Input.acceleration;
 
-        //// clamp acceleration vector to unit sphere
-        //if (dir.sqrMagnitude > 1)
-        //    dir.Normalize();
+        // clamp acceleration vector to unit sphere
+        if (dir.sqrMagnitude > 1)
+           dir.Normalize();
 
-        //if (dir.y < 0 && rb.velocity.y > -speed) {
-        //    forceY = force * dir.y;
-        //}
-        //if (dir.y > 0 && rb.velocity.y < speed) {
-        //    forceY = force * dir.y;
-        //}
-        //if (dir.x < 0 && rb.velocity.x > -speed) {
-        //    lookinLeft = true;
-        //    forceX = force * dir.x;
-        //}
-        //if (dir.x > 0 && rb.velocity.x < speed) {
-        //    lookinLeft = false;
-        //    forceX = force * dir.x;
-        //}
+        if (dir.y < 0 && rb.velocity.y > -speed) {
+           forceY = force * dir.y;
+        }
+        if (dir.y > 0 && rb.velocity.y < speed) {
+           forceY = force * dir.y;
+        }
+        if (dir.x < 0 && rb.velocity.x > -speed) {
+           lookinLeft = true;
+           forceX = force * dir.x;
+        }
+        if (dir.x > 0 && rb.velocity.x < speed) {
+           lookinLeft = false;
+           forceX = force * dir.x;
+        }
     }
 
     private void FixedUpdate() {
@@ -145,7 +145,7 @@ public class PlayerMovement : MonoBehaviour {
             }
         } else {
             groundTags.Add(collision.gameObject.tag);
-            collision.GetComponent<SpriteRenderer>().color = Color.gray; //
+            // collision.GetComponent<SpriteRenderer>().color = Color.gray; //
             lastGroundTag = currentGroundTag;
             currentGroundTag = FindMostFrequent(groundTags);
             if (currentGroundTag != lastGroundTag)
